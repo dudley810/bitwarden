@@ -67,17 +67,25 @@ try
             {
                 try
                 {
-                    if (item.login.passwordRevisionDate == null)
+                    DateTime cd = Convert.ToDateTime(item.creationDate);
+                    if (cd.Date <= myChgDate)
                     {
-                        file.WriteLine(item.name + ",change it now");
+                        if (item.login.passwordRevisionDate == null)
+                        {
+                            file.WriteLine(item.name + ",change it now");
+                        }
+                        else
+                        {
+                            DateTime rd = Convert.ToDateTime(item.login.passwordRevisionDate);
+                            if (rd.Date <= myChgDate.Date)
+                            {
+                                file.WriteLine(item.name + "," + item.login.passwordRevisionDate);
+                            }
+                        }
                     }
                     else
                     {
-                        DateTime rd = Convert.ToDateTime(item.login.passwordRevisionDate);
-                        if (rd.Date <= myChgDate.Date)
-                        {
-                            file.WriteLine(item.name + "," + item.login.passwordRevisionDate);
-                        }
+                        Console.WriteLine("Credential is new since the date so I skipping it:"+ item.name);
                     }
                 }
                 catch
